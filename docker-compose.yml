@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  local-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: local-agent
+    restart: unless-stopped
+    ports:
+      - "11434:11434"  # Ollama API
+      - "3000:3000"    # バックエンドサーバー
+      - "3001:3001"    # フロントエンドサーバー
+    volumes:
+      # Dockerボリュームの代わりにホストの.ollamaディレクトリをマウント
+      - ${HOME}/.ollama:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
