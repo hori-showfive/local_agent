@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const swaggerUI = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
 const apiRoutes = require('./routes/apiRoutes');
 const { checkOllamaServer } = require('./utils/common');
 const { OLLAMA_API_URL } = require('./services/ollamaService');
@@ -11,6 +13,18 @@ const PORT = process.env.PORT || 3000;
 // ミドルウェア設定
 app.use(cors());
 app.use(express.json());
+
+// Swagger UIの設定
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec, {
+  customCssUrl: 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.1.0/swagger-ui.css',
+  explorer: true
+}));
+
+// API仕様をJSONとして提供
+app.get('/api-docs.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
 
 // 静的ファイルの提供
 app.use(express.static(path.join(__dirname, '../../frontend/public')));
@@ -28,6 +42,7 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   console.log(`Ollama API URL: ${OLLAMA_API_URL}`);
   console.log(`Web interface: http://localhost:${PORT}`);
+  console.log(`API documentation: http://localhost:${PORT}/api-docs`);
   
   // サーバー起動後にモデルをチェック
   setTimeout(checkModelsOnStartup, 2000);
