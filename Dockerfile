@@ -43,6 +43,9 @@ if ! ollama list | grep -q "deepcoder:14b"; then\n\
 else\n\
   echo "deepcoder model already exists in mounted volume."\n\
 fi\n\
+echo "Loading deepcoder:14b model into memory..."\n\
+curl -s -X POST http://localhost:11434/api/generate -d "{\\"model\\": \\"deepcoder:14b\\"}" -H "Content-Type: application/json" > /dev/null\n\
+echo "Model loaded successfully."\n\
 echo "Starting backend server..."\n\
 cd /app/backend && node src/index.js &\n\
 echo "Starting frontend server..."\n\
