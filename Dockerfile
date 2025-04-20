@@ -46,7 +46,9 @@ echo "Model loaded successfully."\n\
 echo "Starting backend server..."\n\
 cd /app/backend && node src/index.js &\n\
 echo "Starting frontend server..."\n\
-cd /app/frontend && npm start\n' > /start.sh && chmod +x /start.sh
+cd /app/frontend && npm run start\n' > /start.sh && chmod +x /start.sh
+
+ENV CUDA_VISIBLE_DEVICES=0
 
 # ENTRYPOINTを指定して、/start.shを実行可能にする
 ENTRYPOINT ["/bin/bash"]

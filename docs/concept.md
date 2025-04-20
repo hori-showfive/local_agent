@@ -10,22 +10,19 @@ AI の推論環境と AI が自由にコマンド操作を実行できる環境�
 - テスト駆動開発
 
 # 技術仕様
-- ollama サーバを使用して[deepcoder](https://ollama.com/library/deepcoder:14b)を実行
+- ollama サーバを使用して[gemma3](https://ollama.com/library/gemma3:12b)を実行
 - ollama docker image をベースに環境を作っていく
 - LLM とシェルの仲介システムは nodejs
 - LLM への指示やアクティビティのモニタリングは nextjs+typescript でフロントエンドサーバを作りホストからブラウザでアクセスできるようにする
 - docker コンテナ内部で ollama もバックエンドサーバもフロントエンドサーバも起動する。ホストから完全に独立して機能を提供する。
 
 # 大まかな実装計画
-- [x] まず ollama docker image で[deepcoder](https://ollama.com/library/deepcoder:14b)が実行できることを確認する
+- [x] まず ollama docker image で[gemma3](https://ollama.com/library/gemma3:12b)が実行できることを確認する
 - [x] 次に、nodejs で ollama サーバにリクエストを飛ばして結果を受け取る最もシンプルなプログラムを書いて、動作確認する
 - [x] nodejs でシェルコマンドを実行する最小限のプログラムを書く
 - [x] hello world を表示する最小限のフロントエンドサーバを構築する
 - [x] nodejs でシェルコマンドを実行する最小限のプログラムを拡張して、バックエンドサーバとして機能するように最低限の API を実装する。最低限の API とは、POST リクエストで LLM への指示を受け取って、ollamaAPI をたたいてその指示を送信、ollama からのレスポンスをクライアントに送信する API
-- [x] dockerでそれぞれのサーバが立ち上がって正常に動作しているのか検証する。(デバッグ作業)
-- [ ] コアの機能から少しずつ拡張して作り上げていく
-- [ ] ソースコードをリファクタリングする。
-- [ ] AI エージェントとして機能させるための詳しい仕様を考える
+- [ ] 十分に検討を重ねながら機能を拡張していく
 
 # その他
 
