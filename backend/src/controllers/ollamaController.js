@@ -1,5 +1,6 @@
 const ollamaService = require('../services/ollamaService');
 const { executeCommand } = require('../utils/common');
+const modelConfig = require('../config/modelConfig');
 
 // APIヘルスチェックコントローラー
 function healthCheck(req, res) {
@@ -40,9 +41,9 @@ async function getAvailableModels(req, res) {
 async function generateText(req, res) {
   const { 
     prompt, 
-    model = ollamaService.DEFAULT_MODEL,
-    system,
-    options = {}
+    model = modelConfig.DEFAULT_MODEL,
+    system = modelConfig.DEFAULT_SYSTEM_PROMPT,
+    options = modelConfig.DEFAULT_PARAMETERS
   } = req.body;
   
   if (!prompt) {
@@ -51,37 +52,14 @@ async function generateText(req, res) {
   
   // オプションパラメータの設定
   const modelOptions = {
-    // systemプロンプトの設定（任意）
+    // systemプロンプトの設定
     system,
     
-    // オプションパラメータ（任意）
+    // オプションパラメータ
     options: {
-      // 温度パラメータ（デフォルトは0.8）
-      temperature: options.temperature,
-      
-      // top_kパラメータ (デフォルトは40)
-      top_k: options.top_k,
-      
-      // top_pパラメータ (デフォルトは0.9)
-      top_p: options.top_p,
-      
-      // min_pパラメータ (デフォルトは0.05)
-      min_p: options.min_p,
-      
-      // 繰り返しペナルティ (デフォルトは1.1)
-      repeat_penalty: options.repeat_penalty,
-      
-      // コンテキストウィンドウサイズ (デフォルトは2048)
-      num_ctx: options.num_ctx,
-      
-      // 生成トークン数の上限 (デフォルトは無制限)
-      num_predict: options.num_predict,
-      
-      // ストップトークン（生成を停止する文字列のリスト）
-      stop: options.stop,
-      
-      // 乱数シード（再現性のために使用）
-      seed: options.seed,
+      // デフォルトパラメータとリクエストのオプションをマージ
+      ...modelConfig.DEFAULT_PARAMETERS,
+      ...options
     }
   };
   
@@ -91,11 +69,6 @@ async function generateText(req, res) {
       delete modelOptions.options[key];
     }
   });
-  
-  // オプションが空の場合は削除
-  if (Object.keys(modelOptions.options).length === 0) {
-    delete modelOptions.options;
-  }
   
   const result = await ollamaService.generateWithOllama(prompt, model, modelOptions);
   
@@ -162,7 +135,13 @@ async function loadModel(req, res) {
     });
   }
   
-  const result = await ollamaService.loadModel(model, options);
+  // デフォルトのパラメータと結合
+  const mergedOptions = {
+    ...modelConfig.DEFAULT_PARAMETERS,
+    ...options
+  };
+  
+  const result = await ollamaService.loadModel(model, mergedOptions);
   
   if (result.success) {
     res.json({

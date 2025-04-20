@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const apiController = require('../controllers/ollamaApiController');
+const apiController = require('../controllers/ollamaController');
 
 /**
  * @swagger

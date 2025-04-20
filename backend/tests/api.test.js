@@ -44,7 +44,7 @@ describe('Express API Endpoints', () => {
     const response = await axios.get(`${API_BASE_URL}/check-model`);
     expect(response.data).toHaveProperty('status', 'ok');
     expect(response.data).toHaveProperty('models');
-    // deepcoderモデルがあるかどうかは環境によって異なるため、テストでは検証しない
+    // gemma3モデルがあるかどうかは環境によって異なるため、テストでは検証しない
   });
 
   conditionalTest('generate APIが正常にレスポンスを返すこと', async () => {
@@ -52,7 +52,7 @@ describe('Express API Endpoints', () => {
     try {
       const response = await axios.post(`${API_BASE_URL}/generate`, {
         prompt,
-        model: 'deepcoder:14b'
+        model: 'gemma3:12b'
       });
       
       expect(response.data).toHaveProperty('status', 'ok');

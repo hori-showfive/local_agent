@@ -13,7 +13,7 @@ services:
       - "3001:3001"    # フロントエンドサーバー
     volumes:
       # Dockerボリュームの代わりにホストの.ollamaディレクトリをマウント
-      - ${HOME}/.ollama:/root/.ollama
+      - ./.ollama:/root/.ollama
     deploy:
       resources:
         reservations:

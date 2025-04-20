@@ -25,8 +25,8 @@
  *             properties:
  *               name:
  *                 type: string
- *                 example: deepcoder:14b
- *         hasDeepCoder:
+ *                 example: gemma3:12b
+ *         hasGemma3:
  *           type: boolean
  *           example: true
  *     
@@ -40,8 +40,8 @@
  *           type: array
  *           items:
  *             type: string
- *           example: ["llama3.2", "deepcoder:14b", "phi3:14b", "gemma:7b"]
- *         hasDeepCoder:
+ *           example: ["llama3.2", "gemma3:12b", "phi3:14b", "gemma:7b"]
+ *         hasGemma3:
  *           type: boolean
  *           example: true
  *     
@@ -55,7 +55,7 @@
  *           example: こんにちは、AIエージェント。自己紹介をしてください。
  *         model:
  *           type: string
- *           example: deepcoder:14b
+ *           example: gemma3:12b
  *     
  *     GenerateTextResponse:
  *       type: object
@@ -103,7 +103,7 @@
  *       properties:
  *         model:
  *           type: string
- *           example: llama3.2
+ *           example: gemma3:12b
  *           description: ロードするモデル名
  *         options:
  *           type: object
@@ -150,13 +150,13 @@
  *           example: ok
  *         message:
  *           type: string
- *           example: Model llama3.2 successfully loaded into memory
+ *           example: Model gemma3:12b successfully loaded into memory
  *         metadata:
  *           type: object
  *           properties:
  *             model:
  *               type: string
- *               example: llama3.2
+ *               example: gemma3:12b
  *             created_at:
  *               type: string
  *               example: 2024-04-20T10:22:45.499127Z
@@ -168,7 +168,7 @@
  *       properties:
  *         model:
  *           type: string
- *           example: llama3.2
+ *           example: gemma3:12b
  *           description: アンロードするモデル名
  * 
  *     UnloadModelResponse:
@@ -179,7 +179,7 @@
  *           example: ok
  *         message:
  *           type: string
- *           example: Model llama3.2 successfully unloaded from memory
+ *           example: Model gemma3:12b successfully unloaded from memory
  * 
  *     RunningModelsResponse:
  *       type: object
@@ -194,10 +194,10 @@
  *             properties:
  *               name:
  *                 type: string
- *                 example: llama3.2
+ *                 example: gemma3:12b
  *               model:
  *                 type: string
- *                 example: llama3.2:latest
+ *                 example: gemma3:12b:latest
  *               size:
  *                 type: number
  *                 example: 5137025024

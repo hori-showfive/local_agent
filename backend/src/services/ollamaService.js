@@ -1,8 +1,11 @@
 const axios = require('axios');
+const modelConfig = require('../config/modelConfig');
 
 // ollamaサービス設定
 const OLLAMA_API_URL = process.env.OLLAMA_API_URL || 'http://localhost:11434/api';
-const DEFAULT_MODEL = process.env.DEFAULT_MODEL || 'deepcoder:14b';
+const DEFAULT_MODEL = modelConfig.DEFAULT_MODEL;
+const DEFAULT_SYSTEM_PROMPT = modelConfig.DEFAULT_SYSTEM_PROMPT;
+const DEFAULT_PARAMETERS = modelConfig.DEFAULT_PARAMETERS;
 
 // 実行中のモデルステータスを取得
 async function getRunningModels() {
@@ -36,10 +39,13 @@ async function loadModel(model, options = {}) {
   try {
     console.log(`Loading model into memory: ${model}`);
     
+    // デフォルトパラメータとマージ
+    const mergedOptions = { ...DEFAULT_PARAMETERS, ...options };
+    
     // オプションを含むリクエストボディを構築
     const requestBody = {
       model,
-      options
+      options: mergedOptions
     };
     
     // /generateエンドポイントに空のプロンプトでリクエストを送信
@@ -116,19 +122,26 @@ async function generateWithOllama(prompt, model = DEFAULT_MODEL, parameters = {}
       stream: false,
     };
 
-    // systemプロンプトが指定されていれば追加
-    if (parameters.system) {
+    // システムプロンプトの設定
+    if (!parameters.system) {
+      // システムプロンプトが指定されていない場合はデフォルトを使用
+      requestBody.system = DEFAULT_SYSTEM_PROMPT;
+      console.log(`Using default system prompt`);
+    } else {
       requestBody.system = parameters.system;
-      console.log(`Using system prompt: ${parameters.system}`);
+      console.log(`Using custom system prompt: ${parameters.system.substring(0, 50)}...`);
     }
 
-    // オプションパラメータが指定されていれば追加
+    // オプションパラメータの設定
     if (parameters.options && Object.keys(parameters.options).length > 0) {
-      requestBody.options = parameters.options;
-      console.log(`Using options: ${JSON.stringify(parameters.options)}`);
+      // カスタムオプションとデフォルトパラメータをマージ
+      requestBody.options = { ...DEFAULT_PARAMETERS, ...parameters.options };
+      console.log(`Using merged options parameters`);
+    } else {
+      // 指定しない
     }
     
-    console.log(`Prompt: ${prompt}`);
+    console.log(`Prompt: ${prompt.substring(0, 50)}...`);
     
     const response = await axios.post(`${OLLAMA_API_URL}/generate`, requestBody);
     
@@ -163,12 +176,12 @@ async function getAvailableModels() {
   try {
     const response = await axios.get(`${OLLAMA_API_URL}/tags`);
     const models = response.data.models || [];
-    const hasDeepCoder = models.some(model => model.name.includes('deepcoder'));
+    const hasGemma3 = models.some(model => model.name.includes('gemma3'));
     
     return {
       success: true,
       models: models.map(m => m.name),
-      hasDeepCoder
+      hasGemma3
     };
   } catch (error) {
     console.error('Error checking models:', error.message);
@@ -186,5 +199,7 @@ module.exports = {
   loadModel,
   unloadModel,
   OLLAMA_API_URL,
-  DEFAULT_MODEL
+  DEFAULT_MODEL,
+  DEFAULT_SYSTEM_PROMPT,
+  DEFAULT_PARAMETERS
 };

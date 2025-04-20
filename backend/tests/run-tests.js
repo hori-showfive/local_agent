@@ -92,7 +92,7 @@ async function runAllTests() {
         const prompt = 'What is the capital of Japan?';
         const response = await axios.post(`${API_BASE_URL}/generate`, { 
           prompt,
-          model: ollamaStatus.models.length > 0 ? ollamaStatus.models[0].name : 'deepcoder:14b'
+          model: ollamaStatus.models.length > 0 ? ollamaStatus.models[0].name : 'gemma3:12b'
         });
         if (response.data.status !== 'ok' || !response.data.response) {
           throw new Error('Text generation failed');

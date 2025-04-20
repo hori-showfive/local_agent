@@ -58,11 +58,11 @@ async function checkModelsOnStartup() {
       const models = status.models;
       console.log('Available models:', models.map(m => m.name).join(', '));
       
-      const hasDeepCoder = models.some(model => model.name.includes('deepcoder'));
-      if (!hasDeepCoder) {
-        console.warn('Warning: deepcoder model not found. You may need to pull it manually with "ollama pull deepcoder:14b"');
+      const hasGemma3 = models.some(model => model.name.includes('gemma3'));
+      if (!hasGemma3) {
+        console.warn('Warning: gemma3 model not found. You may need to pull it manually with "ollama pull gemma3:12b"');
       } else {
-        console.log('deepcoder model is available.');
+        console.log('gemma3 model is available.');
       }
     } else {
       console.error('Error checking models on startup:', status.error);

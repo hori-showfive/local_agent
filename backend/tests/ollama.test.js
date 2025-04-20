@@ -14,7 +14,7 @@ describe('Ollama API Integration', () => {
     axios.get.mockResolvedValueOnce({
       data: {
         models: [
-          { name: 'deepcoder:14b' },
+          { name: 'gemma3:12b' },
           { name: 'llama2:7b' }
         ]
       }
@@ -25,7 +25,7 @@ describe('Ollama API Integration', () => {
     
     // 期待される結果を検証
     expect(response.data.models).toHaveLength(2);
-    expect(response.data.models[0].name).toBe('deepcoder:14b');
+    expect(response.data.models[0].name).toBe('gemma3:12b');
     expect(axios.get).toHaveBeenCalledWith('http://localhost:11434/api/tags');
   });
 
@@ -40,7 +40,7 @@ describe('Ollama API Integration', () => {
 
     // テスト対象のエンドポイントを呼び出し
     const response = await axios.post('http://localhost:11434/api/generate', {
-      model: 'deepcoder:14b',
+      model: 'gemma3:12b',
       prompt,
       stream: false
     });
@@ -48,7 +48,7 @@ describe('Ollama API Integration', () => {
     // 期待される結果を検証
     expect(response.data).toEqual(expectedResponse);
     expect(axios.post).toHaveBeenCalledWith('http://localhost:11434/api/generate', {
-      model: 'deepcoder:14b',
+      model: 'gemma3:12b',
       prompt,
       stream: false
     });
@@ -63,7 +63,7 @@ describe('Ollama API Integration', () => {
     // テスト対象のエンドポイントを呼び出し、エラーハンドリングを検証
     await expect(
       axios.post('http://localhost:11434/api/generate', {
-        model: 'deepcoder:14b',
+        model: 'gemma3:12b',
         prompt,
         stream: false
       })
