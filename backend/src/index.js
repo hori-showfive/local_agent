@@ -26,14 +26,6 @@ app.get('/api-docs.json', (req, res) => {
   res.send(swaggerSpec);
 });
 
-// 静的ファイルの提供
-app.use(express.static(path.join(__dirname, '../../frontend/public')));
-
-// メインページへのルーティング
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../frontend/public/index.html'));
-});
-
 // APIルートを登録
 app.use('/api', apiRoutes);
 
@@ -41,7 +33,6 @@ app.use('/api', apiRoutes);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   console.log(`Ollama API URL: ${OLLAMA_API_URL}`);
-  console.log(`Web interface: http://localhost:${PORT}`);
   console.log(`API documentation: http://localhost:${PORT}/api-docs`);
   
   // サーバー起動後にモデルをチェック
