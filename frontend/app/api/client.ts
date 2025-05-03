@@ -11,14 +11,19 @@ const API_BASE_URL = 'http://localhost:3000/api';
  * @param model モデル名（デフォルトはgemma3:12b）
  * @returns レスポンスオブジェクト
  */
-export async function sendPrompt(prompt: string, model: string = 'gemma3:12b') {
+export async function sendPrompt(prompt: string, model?: string) {
   try {
+    let body: { prompt: string; model?: string } = { prompt };
+    if (model) {
+      body = { ...body, model };
+    }
+    console.log('Sending prompt to API:', body);
     const response = await fetch(`${API_BASE_URL}/generate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ prompt, model }),
+      body: JSON.stringify(body),
     });
 
     if (!response.ok) {

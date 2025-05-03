@@ -5,7 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: local-agent
+    container_name: local_agent
+    hostname: qwen3
     restart: unless-stopped
     ports:
       - "11434:11434"  # Ollama API
@@ -21,5 +22,5 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-    environment:
-      - CUDA_VISIBLE_DEVICES=0
+    env_file:
+      - .env

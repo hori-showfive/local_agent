@@ -45,6 +45,9 @@ async function generateText(req, res) {
     system = modelConfig.DEFAULT_SYSTEM_PROMPT,
     options = modelConfig.DEFAULT_PARAMETERS
   } = req.body;
+
+  console.log('model:', model);
+  console.log('default model:', modelConfig.DEFAULT_MODEL);
   
   if (!prompt) {
     return res.status(400).json({ status: 'error', message: 'Prompt is required' });

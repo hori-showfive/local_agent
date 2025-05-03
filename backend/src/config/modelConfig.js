@@ -6,10 +6,11 @@
 
 const promptLoader = require('../utils/promptLoader');
 
+// 環境変数の読み込み状況をログ出力
+console.log(`[modelConfig] Reading process.env.DEFAULT_MODEL: "${process.env.DEFAULT_MODEL || '未設定'}"`);
+
 // デフォルトのプロンプト文字列（プロンプトファイルがない場合のフォールバック）
 const DEFAULT_PROMPT_TEXT = 'あなたは優秀なプログラマーアシスタントです。ユーザーからの質問に対して、正確で簡潔かつ実用的な回答を提供してください。';
-const JAPANESE_PROMPT_TEXT = 'あなたは日本語に特化したAIアシスタントです。質問には日本語で回答し、専門用語も適切に日本語に翻訳してください。';
-const EXPERT_PROMPT_TEXT = 'あなたは上級プログラマー向けのエキスパートアシスタントです。高度な技術的内容と詳細なコード分析を提供してください。';
 const READFILE_TOOL_PROMPT_TEXT = 'あなたはファイル読み込み操作を支援するアシスタントです。';
 
 // テンプレートからプロンプトを取得（存在しない場合はデフォルトテキストを使用）
@@ -22,7 +23,7 @@ const AVAILABLE_PROMPTS = promptLoader.listAllPrompts();
 // デフォルトの設定値
 const defaultConfig = {
   // デフォルトのモデル名
-  DEFAULT_MODEL: process.env.DEFAULT_MODEL || 'gemma3:12b',
+  DEFAULT_MODEL: process.env.DEFAULT_MODEL ||  '',
   
   // デフォルトのシステムプロンプト
   DEFAULT_SYSTEM_PROMPT: process.env.DEFAULT_SYSTEM_PROMPT || _DEFAULT_SYSTEM_PROMPT,

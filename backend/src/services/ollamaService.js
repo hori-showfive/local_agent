@@ -113,6 +113,8 @@ async function unloadModel(model) {
 // ollamaへのリクエスト関数 (拡張版)
 async function generateWithOllama(prompt, model = DEFAULT_MODEL, parameters = {}) {
   try {
+    console.log(`[ollamaService] generateWithOllama called with model: ${model}`);
+    console.log(`[ollamaService]  ${DEFAULT_MODEL}`);
     console.log(`Sending request to Ollama with model: ${model}`);
     
     // 送信するリクエストボディを構築
